@@ -1,0 +1,78 @@
+@charset "UTF-8";
+
+main{
+	text-align:center;
+	font-size:14em;
+}
+body{
+	background-color:white;
+	color:rgba(0,0,0,1);
+}
+p{
+	text-align:center;
+	text-indent:50px;
+}
+iframe{
+
+	
+}
+.botao{
+	font-family: arial; 
+	font-size:14px;
+	text-transform: upprcase; /*letaras maiusculas a*/
+	font-weight:700; /*peso ou largura 700 é um negrito, bold a*/
+	border:none;
+	padding:10px 15px; /*margem da palavra a fronteira do objeto*/
+	cursor:pointer; /*muda cursor do mouse ao tocar area*/
+	display:inline-block; 
+	text-decoration:none; /*tira underline de links*/
+	text-align:center;
+}
+.botao-verde{
+	background:green; /*cor de fundo*/
+	color:#fff;
+	box-shadow:0 5px 0 #005f00; /*sobra esquerda=0 bot=5 direita=0*/
+}
+.botao-verde:hover{  /*houver= qundo maouse sobre*/
+	background:#005f00;
+	color:#fff;
+	box-shadow:0 5px 0 #014801;
+}
+.botao-verde:active{ /*quando clicado*/
+	position:relative; /*relativo ao objeto*/
+	top:5px;
+	box-shadow:none;
+}
+.botao-preto{
+	background:black; /*cor de fundo*/
+	color:#fff;
+	box-shadow:0 5px 0 #371414; /*sobra esquerda=0 bot=5 direita=0*/
+}
+.botao-preto:hover{  /*houver= qundo maouse sobre*/
+	background:#6c0101;
+	color:#fff;
+	box-shadow:0 5px 0 #460000;
+}
+.botao-preto:active{ /*quando clicado*/
+	position:relative; /*relativo ao objeto*/
+	top:5px;
+	box-shadow:none;
+}
+.container{
+	position:relative;
+	top:50%;
+	left:50%;
+	transform: translate(-50%,-50%);
+}
+.area1 {
+	position:relative;
+	top:50%;
+	left:40%;
+	transform: translate(-50%,-50%);
+}
+.area2 {
+	position:relative;
+	top:50%;
+	left:60%;
+	transform: translate(-50%,-50%);
+}

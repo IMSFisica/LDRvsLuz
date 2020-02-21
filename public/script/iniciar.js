@@ -1,0 +1,3 @@
+function motorSubir(){
+	alerta.on();
+}

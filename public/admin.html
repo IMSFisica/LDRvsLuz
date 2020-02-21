@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="img/LDR3.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>LDR vs Luz</title>
+  </head>
+
+  <body>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    <script src="/socket.io/socket.io.js"></script>
+
+    <div class="moldura1">
+        <div class="row">
+            <div class="col-md-4 "><!--Booltstrap (cal-lg, cal-md, cal-sm, cal-xs)tamanhus de colunas -->
+                                        <!-- (-2) quantidade de colunas que vai usar-->
+                                        <!-- div1 é o nome dela-->
+                
+                <h2 class="area5">Dados e calibragem</h2>
+                <img class="objectImage area1" src="http://200.17.49.71:8081"  alt="camera">
+                <br>
+                <br>
+                <button id="up" data-state="off" class="button area2">up</button>
+                <button id="down" data-state="off" class="button area3">down</button> 
+                <br>
+                <br>
+                <br>
+            </div>
+            
+            <div class="col-sm-8 area4">
+                <br>
+                <!--<form action="" class="area1">
+                    <label for="led">LED liga em: </label>
+                    <input required id="led1"type="number" class="inputLDR" name="led" placeholder="          30%">
+                    <button id="buttonEnviar"class="button3 area1" >Enviar</button>
+                    <div id="msgs"></div>
+                </form>-->
+                <br>
+                <div class="alerta area6"></div>
+                
+                <table id="tabelaDeDados2" style="width:80%" class="">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Acessos</th> 
+                        </tr>
+                    </thead>
+
+                    <tbody id="corpoDaTabela2" name="linhasTabela2">
+                        
+                    </tbody>
+                    
+    
+                </table>
+                <br>
+                <iframe id="txtArea1" style="display:none"></iframe>
+                
+            </div>
+            
+        </div>
+        <div class="row">
+
+            <div class="col-md-12">
+
+            </div>
+            <div class="col-md-6">
+
+            </div>
+        </div>
+    </div>
+ 
+    <script>
+        let up = document.querySelector('#up');
+        let down = document.querySelector('#down');
+        var corpo_tabela = document.querySelector("#corpoDaTabela2");
+        const socket = io();
+        let DiaDoAceso, Acesso, pBaixo = false, pCima = false;
+        var hoje = new Date();
+        var ano_atual = hoje.getFullYear();
+
+        //pega os dados do servidor ou sincroniza entre os clients 
+        socket.on('data1', data => {
+            numero = data.serverNumero;
+            tensao = data.serverTensao;
+            resistencia = data.serverResistencia;
+            corrente = data.serverCorrente;
+            luz = data.serverLuz;
+            lux = data.serverLux;
+            console.log ('a tensao é '+ tensao)
+            templateNovaLinha(numero, tensao, resistencia, corrente, luz, lux);
+        });
+
+
+        
+        up.addEventListener('click', event => {
+            pCima = true;
+            let val1 = up.getAttribute('data-state');
+            if (val1 == 'off') {
+                up.setAttribute('class', 'button1 area2')
+                up.setAttribute('data-state', 'on');
+                socket.emit('baixo', { Baixo: pBaixo});
+                socket.emit('uping');
+            }
+        });
+        down.addEventListener('click', event => {
+            pBaixo = true;
+            let val2 = down.getAttribute('data-state');
+            if (val2 == 'off') {
+                down.setAttribute('class', 'button1 area3')
+                down.setAttribute('data-state', 'on');
+                socket.emit('cima', { Cima: pCima});
+                socket.emit('downing');
+            }
+        });
+        
+        socket.on('StopUp', () => {
+            up.setAttribute('class', 'button area2')
+            up.setAttribute('data-state', 'off');
+        })
+        socket.on('StopDown', () => {
+            down.setAttribute('class', 'button area3')
+            dwon.setAttribute('data-state', 'off');
+        })        
+
+        //cria tabelas dinamicas é vinculado com o template e com tbody (elementos html)
+        function templateNovaLinha(numero, tensao, resistencia, corrente, luz, lux) {
+            
+            var template = document.querySelector("#template1");
+            let lista_td = template.content.querySelectorAll("td");
+            lista_td[0].textContent = DiaDoAcesso;
+            lista_td[1].textContent = Acessos;
+            var nova_linha = document.importNode(template.content, true);
+            corpo_tabela.appendChild(nova_linha);
+        }
+    </script>
+    
+    <template id="template1">
+        <tr>
+            <td></td>
+            <td></td>
+
+        </tr>
+    </template>
+  </body>
+</html>

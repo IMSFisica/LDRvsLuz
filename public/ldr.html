@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="img/LDR3.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>LDR vs Luz</title>
+  </head>
+
+  <body>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    <script src="/socket.io/socket.io.js"></script>
+
+    <div class="moldura1">
+        <div class="row">
+            <div class="col-md-4 "><!--Booltstrap (cal-lg, cal-md, cal-sm, cal-xs)tamanhus de colunas -->
+                                        <!-- (-2) quantidade de colunas que vai usar-->
+                                        <!-- div1 é o nome dela-->
+                
+                <h2 class="area5">LDR vs Luz</h2>
+                <img class="objectImage area1" src="http://200.17.49.71:8081"  alt="camera">
+                <br>
+                <br>
+                <button id="lamp" data-state="off" class="button area2">Luz</button>
+                <button id="start" data-state="off" class="button area3">Iniciar</button> 
+                <br>
+                <br>
+                <br>
+            </div>
+            
+            <div class="col-sm-8 area4">
+                <br>
+                <form action="" class="area1">
+                    <label for="led">LED liga em: </label>
+                    <input required id="led1"type="number" class="inputLDR" name="led" placeholder="          30%">
+                    <button id="buttonEnviar"class="button3 area1" >Enviar</button>
+                    <div id="msgs"></div>
+                </form>
+                <br>
+                <div class="alerta area6"></div>
+                
+                <table id="tabelaDeDados" style="width:80%" class="">
+                    <thead>
+                        <tr>
+                            <th>Altura (cm)</th>
+                            <th>Tensão (V)</th> 
+                            <th>Resistência (KΩ)</th>
+                            <th>Corrente (mA)</th>
+                            <th>Luz (%)</th>
+                            <th>luz (lux)</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="corpoDaTabela" neme="linhasTabela">
+                        
+                    </tbody>
+                    
+    
+                </table>
+                <br>
+                <iframe id="txtArea1" style="display:none"></iframe>
+                <button id="btnExport" onclick="fnExcelReport()" class="button area7">Exportar</button> 
+                
+            </div>
+            
+        </div>
+        <div class="row">
+
+            <div class="col-md-12">
+
+            </div>
+            <div class="col-md-6">
+
+            </div>
+        </div>
+    </div>
+    <script>
+
+    function fnExcelReport(e)
+    {
+        var tab_text="<table border='2px'><tr bgcolor='#87AFC6'>";
+        var textRange; var j=0;
+        tab = document.getElementById('tabelaDeDados'); // id of table
+
+        for(j = 0 ; j < tab.rows.length ; j++) 
+        {     
+            tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+            //tab_text=tab_text+"</tr>";
+        }
+
+        tab_text=tab_text+"</table>";
+        tab_text= tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+        tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+        tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE "); 
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+        {
+            txtArea1.document.open("txt/html","replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus(); 
+            sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+        }  
+        else                 //other browser not tested on IE 11
+            sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));  
+
+        return (sa);
+    }
+    </script>
+    <script>
+        let lamp = document.querySelector('#lamp');
+        let start = document.querySelector('#start');
+        var buttonEnviar = document.querySelector('#buttonEnviar');
+        var led1 = document.querySelector('input');
+        var corpo_tabela = document.querySelector("#corpoDaTabela");
+        const socket = io();
+        let numero = 0, tensao, resistencia, corrente, luz,lux;
+        var hoje = new Date();
+        var ano_atual = hoje.getFullYear();
+
+        //pega os dados do servidor ou sincroniza entre os clients 
+        socket.on('data1', data => {
+            numero = data.serverNumero;
+            tensao = data.serverTensao;
+            resistencia = data.serverResistencia;
+            corrente = data.serverCorrente;
+            luz = data.serverLuz;
+            lux = data.serverLux;
+            console.log ('a tensao é '+ tensao)
+            templateNovaLinha(numero, tensao, resistencia, corrente, luz, lux);
+        });
+        socket.on('sincronizarLuzON', () => {
+            lamp.setAttribute('class', 'button1 area2')
+            lamp.setAttribute('data-state', 'on');
+        })
+        socket.on('sincronizarLuzOff', () => {
+            lamp.setAttribute('class', 'button area2')
+            lamp.setAttribute('data-state', 'off');
+        })
+        socket.on('sincronizarStartOn', () => {
+            start.setAttribute('class', 'button2 area3')
+            start.setAttribute('data-state', 'on');
+        })
+        socket.on('sincronizarStartOff', () => {
+            start.setAttribute('class', 'button area3');  
+            start.setAttribute('data-state', 'off');
+        })
+        socket.on('sincronizarLED', (data) => {
+            document.querySelector(".alerta").innerText = ("O LED vermelho será ligado com menos de " + data.LDR + "% de luminosidade");
+        })
+        
+        lamp.addEventListener('click', () => {
+            let val = lamp.getAttribute('data-state');
+            if (val == 'off') {
+                lamp.setAttribute('class', 'button1 area2')
+                lamp.setAttribute('data-state', 'on');
+                
+                socket.emit('luzOn')
+
+                
+            }
+            if (val == 'on') {
+                lamp.setAttribute('class', 'button area2')
+                lamp.setAttribute('data-state', 'off');
+                socket.emit('luzOff')
+            }
+        });
+        start.addEventListener('click', event => {
+            let val2 = start.getAttribute('data-state');
+            if (val2 == 'off') {
+                start.setAttribute('class', 'button2 area3')
+                start.setAttribute('data-state', 'on');
+                socket.emit('DataAtual', { Hoje: ano_atual});
+                socket.emit('ligar');
+            }
+        });
+        buttonEnviar.addEventListener('click', event => {
+            event.preventDefault();
+            document.querySelector(".alerta").innerText = "";
+            var valor_ldr = led1.value;
+            if(valor_ldr >=0 && valor_ldr <=100 && valor_ldr != '' && valor_ldr != null){
+                socket.emit('ValorLED', { vLdr: valor_ldr })
+                document.querySelector(".alerta").innerText = ("O LED vermelho será ligado com menos de " + valor_ldr + "% de luminosidade");
+            }else{
+                document.querySelector(".alerta").innerText = "Valor Inválido";
+            };
+        });
+
+        //cria tabelas dinamicas é vinculado com o template e com tbody (elementos html)
+        function templateNovaLinha(numero, tensao, resistencia, corrente, luz, lux) {
+            
+            var template = document.querySelector("#template1");
+            let lista_td = template.content.querySelectorAll("td");
+            lista_td[0].textContent = numero;
+            lista_td[1].textContent = tensao;
+            lista_td[2].textContent = resistencia;
+            lista_td[3].textContent = corrente;
+            lista_td[4].textContent = luz;
+            lista_td[5].textContent = lux;
+            var nova_linha = document.importNode(template.content, true);
+            corpo_tabela.appendChild(nova_linha);
+        }
+    </script>
+    
+    <template id="template1">
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </template>
+  </body>
+</html>
