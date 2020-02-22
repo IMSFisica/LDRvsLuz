@@ -29,7 +29,7 @@ Excel e traçar seus gráficos e observar suas linhas de tendência.
 É recomendado também para a complementação experimental: da lei do inverso do quadrado 
 da distância; estudo de resistores; e irradiação luminosa.
 
-## Requsesitos
+## Requisitos
 
 *	Node.js
 *	Express
