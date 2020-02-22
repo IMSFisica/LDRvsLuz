@@ -39,4 +39,4 @@ da distância; estudo de resistores; e irradiação luminosa.
 * Socket.IO
 *	Nodemon
 
- [Mais detalhes] (https://sites.google.com/view/fisetec/material/experimenta%C3%A7%C3%A3o-remota/tecnologias?authuser=0)
+ [Mais detalhes](https://sites.google.com/view/fisetec/material/experimenta%C3%A7%C3%A3o-remota/tecnologias?authuser=0)
