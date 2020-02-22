@@ -15,7 +15,7 @@
 </p>
 
 [FeT](https://sites.google.com/view/fisetec/) é um site que fomenta o ensino de 
-física em consonância com tecnologias, disponibilizando gratuitamente experimentos
+Física em consonância com tecnologias, disponibilizando gratuitamente experimentos
 controlados remotamente, aplicativos e metodologias, assim como todo o processo de
 desenvolvimento e as tecnologias envolvidas, expondo-as para facilitar eventuais 
 replicações.
