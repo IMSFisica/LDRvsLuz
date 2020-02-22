@@ -20,7 +20,7 @@ controlados remotamente, aplicativos e metodologias, assim como todo o processo 
 desenvolvimento e as tecnologias envolvidas, expondo-as para facilitar eventuais 
 replicações.
 
-## LDR vs Luz (Rezumo)
+## LDR vs Luz (Resumo)
 
 Esse experimento consiste na leitura de um fotoresistor (LDR) em função da intensidade 
 luminosa de uma lanterna que se afasta periodicamente do sensor. Com base nos dados 
@@ -37,5 +37,6 @@ da distância; estudo de resistores; e irradiação luminosa.
 *	Johnny-Five 
 *	Bootstrap 
 * Socket.IO
-*	Nodemon 
+*	Nodemon
 
+ [Mais detalhes] (https://sites.google.com/view/fisetec/material/experimenta%C3%A7%C3%A3o-remota/tecnologias?authuser=0)
