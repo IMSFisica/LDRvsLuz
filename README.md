@@ -1,12 +1,12 @@
 <p align="center">
   <a href="https://sites.google.com/view/fisetec/" target="_blank" >
-    <img alt="Fisica & Tecnologia" src="https://github.com/IMSFisica/LDRvsLuz/blob/master/public/img/MyLogo8.png" width="400" />
+    <img alt="Fisica & Tecnologia" src="https://github.com/IMSFisica/LDRvsLuz/blob/master/public/img/MyLogo8.png" width="450" />
   </a>
 </p>
 <p align="center">
     <a href="https://sites.google.com/view/fisetec/material/experimenta%C3%A7%C3%A3o-remota/experimentos?authuser=0" target="_blank">
         <img alt="Experimento remoto" src="https://github.com/IMSFisica/LDRvsLuz/blob/master/public/img/start1.png"  width="30">
-        Experimente & nbsp; & nbsp; & nbsp; & nbsp;
+      <p> Experimente & nbsp; & nbsp; & nbsp; & nbsp; </p>
     </a>
     <a href="https://play.google.com/store/apps/details?id=com.IzacPhysics.LDR" target="_blank">
         <img alt="APP" src="https://github.com/IMSFisica/LDRvsLuz/blob/master/public/img/LDR3.png"  width="20">
