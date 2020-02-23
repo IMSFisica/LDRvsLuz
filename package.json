@@ -1,7 +1,7 @@
 {
   "name": "site",
   "version": "0.0.1",
-  "description": "API de experimentação remota voltada para Física",
+  "description": "API de experimentacao remota voltada para Fisica",
   "main": "index.js",
   "scripts": {
     "test": "test",
@@ -28,15 +28,11 @@
     "nodemon": "^1.19.1"
   },
   "dependencies": {
-    "@hapi/hapi": "^18.3.1",
     "arduino": "^0.2.3",
     "bootstrap": "^4.3.1",
     "express": "^4.17.1",
-    "firebase": "^6.1.1",
-    "firebase-admin": "^8.1.0",
     "johnny-five": "^1.1.0",
     "jquery": "^3.4.1",
-    "log": "^6.0.0",
     "popper.js": "^1.15.0",
     "socket.io": "^2.2.0"
   }
